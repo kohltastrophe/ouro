@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.20)
+project(OuroOracle LANGUAGES CXX)
+set(LUAU_SOURCE_DIR "" CACHE PATH "Pinned official Luau source checkout")
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
+execute_process(
+  COMMAND "${Python3_EXECUTABLE}" "${CMAKE_CURRENT_SOURCE_DIR}/generate.py"
+          --source "${LUAU_SOURCE_DIR}" --verify-only
+  RESULT_VARIABLE verification)
+if(NOT verification EQUAL 0)
+  message(FATAL_ERROR "Upstream source does not match UPSTREAM.json")
+endif()
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/../UPSTREAM.json" upstream_manifest)
+string(JSON upstream_revision GET "${upstream_manifest}" commit)
+set(LUAU_BUILD_CLI OFF CACHE BOOL "" FORCE)
+set(LUAU_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+add_subdirectory("${LUAU_SOURCE_DIR}" upstream EXCLUDE_FROM_ALL)
+add_executable(parser-oracle oracle.cpp)
+target_compile_features(parser-oracle PRIVATE cxx_std_17)
+target_compile_definitions(parser-oracle PRIVATE LUAU_UPSTREAM_REVISION="${upstream_revision}")
+target_include_directories(parser-oracle PRIVATE "${LUAU_SOURCE_DIR}/Analysis/include" "${LUAU_SOURCE_DIR}/Analysis/src" "${LUAU_SOURCE_DIR}/Compiler/include" "${LUAU_SOURCE_DIR}/Bytecode/include" "${LUAU_SOURCE_DIR}/VM/include")
+target_link_libraries(parser-oracle PRIVATE Luau.Ast Luau.Compiler Luau.Bytecode Luau.VM)

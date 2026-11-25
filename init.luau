@@ -1,0 +1,39 @@
+--!strict
+-- Shared Roblox/standalone entrypoint. @self addresses children of init.luau.
+local Ouro = require("@self/src")
+export type NodeId = Ouro.NodeId
+export type ListId = Ouro.ListId
+export type SymbolId = Ouro.SymbolId
+export type BindingId = Ouro.BindingId
+export type GrammarFlags = Ouro.GrammarFlags
+export type ResolvedFlags = Ouro.ResolvedFlags
+export type ParseOptions = Ouro.ParseOptions
+export type Diagnostic = Ouro.Diagnostic
+export type Comment = Ouro.Comment
+export type HotComment = Ouro.HotComment
+export type TokenTape = Ouro.TokenTape
+export type AstTable = Ouro.AstTable
+export type AstVisitor = Ouro.AstVisitor
+export type Node = Ouro.Node
+export type Binding = Ouro.Binding
+export type Arena = Ouro.Arena
+export type ParseResult = Ouro.ParseResult
+export type ParserContext = Ouro.ParserContext
+export type CompileConstant = Ouro.CompileConstant
+export type ProtoTableConstant = Ouro.ProtoTableConstant
+export type ProtoClassConstant = Ouro.ProtoClassConstant
+export type Proto = Ouro.Proto
+export type ProtoModule = Ouro.ProtoModule
+export type CompileOptions = Ouro.CompileOptions
+export type CompileResult = Ouro.CompileResult
+export type BytecodeEncoder = Ouro.BytecodeEncoder
+export type BytecodeDecoder = Ouro.BytecodeDecoder
+export type BytecodeBuilder = Ouro.BytecodeBuilder
+export type ResourceLimits = Ouro.ResourceLimits
+export type EnvironmentOptions = Ouro.EnvironmentOptions
+export type DebugFrameInfo = Ouro.DebugFrameInfo
+export type CoverageEntry = Ouro.CoverageEntry
+export type UpvalueInfo = Ouro.UpvalueInfo
+export type LoadMode = Ouro.LoadMode
+export type LoadOptions = Ouro.LoadOptions
+return Ouro

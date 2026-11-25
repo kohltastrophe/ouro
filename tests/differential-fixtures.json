@@ -1,0 +1,668 @@
+[
+  {
+    "name": "empty",
+    "source": "",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "comments",
+    "source": "--!strict\n-- comment\nreturn 1",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "arithmetic",
+    "source": "return -2^2, 2^3^4, 1..\"x\", 8//2, not false and true",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "literals",
+    "source": "return nil,true,false,.5,1e-5,0xff,0b101,12_345",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "strings",
+    "source": "return \"foo\\z\\n  bar\", [=[\nhello\r\nworld]=], \"\\u{1f600}\"",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "tables",
+    "source": "return {1,2; x=3,[4]=5}",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "calls",
+    "source": "local x = obj:method(1, f(2)); return x.y[z]",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "assignment",
+    "source": "local x,y=1,2; x,y=y,x; x += 2",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "scope",
+    "source": "local x=1; do local x=x; x=2 end; return x",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "closure",
+    "source": "local function f(x) return function() return x end end; return f(1)",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "method",
+    "source": "function t:m(x) return self,x end",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "loops",
+    "source": "for i=1,10,2 do if i==3 then continue end end; for k,v in pairs(t) do break end",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "repeat",
+    "source": "repeat local x=1 until x==1",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "while",
+    "source": "while f() do break end",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "if",
+    "source": "if x then f() elseif y then g() else h() end",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "ifexpr",
+    "source": "return if x then 1 elseif y then 2 else 3",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "varargs",
+    "source": "local function f(...) return ... end",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "interpolation",
+    "source": "return `hi {name} {f({x=1})}`",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "typed",
+    "source": "local x: number = 1; return x :: number",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "types",
+    "source": "type A<T, U...> = {x: T, [string]: number}; type B = (A<number>?, string) -> (number, ...string)",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "type_function",
+    "source": "type function identity(t) return t end",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "singleton",
+    "source": "type X = \"a\" | false | nil",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "typeof",
+    "source": "type X = typeof(foo.bar)",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "nestedtype",
+    "source": "type X = ((number & string) | boolean)",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "genericfn",
+    "source": "local function f<T,U...>(x:T,...:U...): (T,U...) return x,... end",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "unicode",
+    "source": "return \"\u03c0 \u2600\"",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "crlf",
+    "source": "local x = 1\r\n-- comment\r\nreturn x\r\n",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "malformed_expr",
+    "source": "local x = ",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "malformed_string",
+    "source": "return \"\\q\"",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "malformed_interp",
+    "source": "return `oops {",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "malformed_loop",
+    "source": "for x = do end",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "unexpected_end",
+    "source": "end",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "break_outside",
+    "source": "break",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "varargs_outside",
+    "source": "return ...",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "missing_end",
+    "source": "if x then f()",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "bad_assignment",
+    "source": "f() = 1",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "broken_long",
+    "source": "return [==[ hi",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "unfinished_type",
+    "source": "type A = {foo:",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "embedded_nul",
+    "source": "return \"a\\000b\"",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "raw_byte",
+    "source": "local x = \u0000",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "attributes",
+    "source": "@native function f() return 1 end",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "declareglobal",
+    "source": "declare x: number",
+    "profile": "upstream",
+    "allowDeclarationSyntax": true,
+    "origin": "targeted"
+  },
+  {
+    "name": "declarefunction",
+    "source": "declare function f<T>(x:T): T",
+    "profile": "upstream",
+    "allowDeclarationSyntax": true,
+    "origin": "targeted"
+  },
+  {
+    "name": "declareextern",
+    "source": "declare extern type X with foo: number end",
+    "profile": "upstream",
+    "allowDeclarationSyntax": true,
+    "origin": "targeted"
+  },
+  {
+    "name": "iflocal",
+    "source": "if local x=f() then print(x) end",
+    "profile": "experimental",
+    "origin": "targeted"
+  },
+  {
+    "name": "whilelocal",
+    "source": "local i = 0\nlocal function nextVal() i += 1; return if i <= 3 then i else nil end\nlocal sum = 0\nwhile local v = nextVal() do sum += v end\nreturn sum",
+    "profile": "experimental",
+    "origin": "targeted"
+  },
+  {
+    "name": "whileconst",
+    "source": "local t = { 10, 20 }\nlocal n = 0\nwhile const v = table.remove(t) do n += v end\nreturn n",
+    "profile": "experimental",
+    "origin": "targeted"
+  },
+  {
+    "name": "exportlocal",
+    "source": "export local x = 1",
+    "profile": "experimental",
+    "origin": "targeted"
+  },
+  {
+    "name": "malformed_int_suffix",
+    "source": "return 1i, 0xffi",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "exacttable",
+    "source": "type X = {| x: number |}",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "classes_private_0748",
+    "source": "local class Box\n\tprivate _val: number\n\tpublic label: string\n\tprivate function _helper(self, n: number)\n\t\treturn self._val + n\n\tend\n\tfunction get(self, d: number)\n\t\treturn self:_helper(d)\n\tend\nend\nconst class Sub extends Box\nend\nlocal B\nclass B\n\tprivate _x\nend\nreturn B",
+    "profile": "experimental",
+    "skipVm": true,
+    "origin": "targeted"
+  },
+  {
+    "name": "declareextern_badunicode",
+    "source": "declare extern \u00ff with foo: number end",
+    "profile": "experimental",
+    "allowDeclarationSyntax": true,
+    "origin": "targeted"
+  },
+  {
+    "name": "table_create_clear_fastcall",
+    "source": "local t = table.create(3, 7)\nlocal n = #t\ntable.clear(t)\nreturn n, #t",
+    "profile": "upstream",
+    "flags": { "LuauCompileTableBuiltinsCreateClear": true },
+    "origin": "targeted"
+  },
+  {
+    "name": "pcall_xpcall_v14",
+    "source": "local ok1, v1 = pcall(function(a) return a + 1 end, 41)\nlocal ok2, v2 = xpcall(function() error('boom') end, function(e) return 'caught' end)\nreturn ok1, v1, ok2, v2",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "inlined_upvalue_reuse_o2",
+    "source": "local helper = { tag = 10 }\nlocal function make(a, b)\n\treturn { tag = helper.tag, a = a, b = b }\nend\nlocal function wrap(x)\n\treturn make(x, x + 1)\nend\nreturn wrap(5).tag + wrap(5).b",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "table_escape_self_and_fn_o2",
+    "source": "local t1 = { x = 1, m = function(self) self.x = 2 end }\nt1:m()\nlocal t2 = { f = function() return 1 end }\nfunction t2.f() return 2 end\nreturn t1.x, t2.f()",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "shortcircuit_and_if_false_o2",
+    "source": "local function f() return 1 end\nlocal a = false and f()\nlocal b = 0\nif f() and false then b = 1 else b = 2 end\nreturn a, b",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "local_alias_multivar_bit32_o2",
+    "source": "local m = math\nlocal x, y = m.abs(-5)\nlocal z = bit32.band(2^32 + 1, 1)\nlocal s = `a{'b'}`\nreturn x, y, z, s",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "cframe_setfenv_debug_info",
+    "source": "local ok1 = pcall(function() setfenv(2, {}) end)\nlocal ok2, src2, name2 = pcall(function() return debug.info(2, 'sn') end)\nlocal s, l, n, a, v = debug.info(print, 'slna')\nreturn ok1, ok2, src2, name2, s, l, n, a, v",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "newproxy_namecall_priority",
+    "source": "local u = newproxy(true)\nlocal mt = getmetatable(u)\nmt.__namecall = function(self, x)\n\treturn 'nc:' .. tostring(x)\nend\nmt.__index = function()\n\treturn function() return 'idx' end\nend\nmt.__metatable = 'locked'\nreturn u:ping(7), getmetatable(u)",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "powk_neg_inf_sqrt",
+    "source": "local a = (-math.huge) ^ 0.5\nlocal b = (-0.0) ^ 0.5\nreturn a ~= a, 1 / b < 0",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "for_in_G_and_locked_mt",
+    "source": "local hasMath = false\nfor k, _ in _G do\n\tif k == 'math' then hasMath = true end\nend\nlocal t = setmetatable({ a = 2, b = 5 }, { __metatable = 'locked' })\nlocal sum = 0\nfor _, v in t do sum += v end\nreturn hasMath, sum",
+    "profile": "upstream",
+    "origin": "targeted"
+  },
+  {
+    "name": "upstream_Parser_line_177",
+    "source": "\n        local foo: SomeModule.CoolType\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:177"
+  },
+  {
+    "name": "upstream_Parser_line_186",
+    "source": "\n        function foo(): number return 55 end\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:186"
+  },
+  {
+    "name": "upstream_Parser_line_205",
+    "source": "\n        function f(): (number) -> nil return nil end\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:205"
+  },
+  {
+    "name": "upstream_Parser_line_228",
+    "source": "\n        function f(): (number, string) return 1, \"foo\" end\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:228"
+  },
+  {
+    "name": "upstream_Parser_line_256",
+    "source": "\n        function f(): () -> nil return nil end\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:256"
+  },
+  {
+    "name": "upstream_Parser_line_289",
+    "source": "\n        local zero: number\n        local one: {x: number, y: string}\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:289"
+  },
+  {
+    "name": "upstream_Parser_line_299",
+    "source": "\n        local t: {\n            [string]: number,\n            f: () -> nil\n        }\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:299"
+  },
+  {
+    "name": "upstream_Parser_line_311",
+    "source": "\n        local zero: number\n        local one: {x: number, y: string, }\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:311"
+  },
+  {
+    "name": "upstream_Parser_line_321",
+    "source": "\n        local zero: number\n        local one: {x: number; y: string; }\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:321"
+  },
+  {
+    "name": "upstream_Parser_line_331",
+    "source": "\n        for i: number = 0, 50 do end\n        for i: number, s: string in expr() do end\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:331"
+  },
+  {
+    "name": "upstream_Parser_line_341",
+    "source": "\n        local n: nil\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:341"
+  },
+  {
+    "name": "upstream_Parser_line_350",
+    "source": "\n        local f: (number, string) -> nil\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:350"
+  },
+  {
+    "name": "upstream_Parser_line_359",
+    "source": "\n        local f: (number) -> (number, number)\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:359"
+  },
+  {
+    "name": "upstream_Parser_line_368",
+    "source": "\n        local f: () -> number\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:368"
+  },
+  {
+    "name": "upstream_Parser_line_377",
+    "source": "\n        local f: (number) -> ()\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:377"
+  },
+  {
+    "name": "upstream_Parser_line_386",
+    "source": "\n        local f: (string) -> () & (number) -> ()\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:386"
+  },
+  {
+    "name": "upstream_Parser_line_401",
+    "source": "\n        local f: (string) -> (string, number) & (number) -> (number, string)\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:401"
+  },
+  {
+    "name": "upstream_Parser_line_416",
+    "source": "\n        local f: (string) -> (string) & (number) -> (number)\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:416"
+  },
+  {
+    "name": "upstream_Parser_line_436",
+    "source": "\n        type A = typeof(1)\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:436"
+  },
+  {
+    "name": "upstream_Parser_line_450",
+    "source": "\n        type A = string\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:450"
+  },
+  {
+    "name": "upstream_Parser_line_461",
+    "source": "\n        type(\"a\")\n        type = nil\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:461"
+  },
+  {
+    "name": "upstream_Parser_line_478",
+    "source": "\n        local A = nil\n        type A = string\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:478"
+  },
+  {
+    "name": "upstream_Parser_line_491",
+    "source": "\n        type Packed1<T...> = (T...) -> (T...)\n        type Packed2<T...> = (Packed1<T...>, T...) -> (Packed1<T...>, T...)\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:491"
+  },
+  {
+    "name": "upstream_Parser_line_509",
+    "source": "\n        local Types = nil\n        type Foo = Types.Bar\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:509"
+  },
+  {
+    "name": "upstream_Parser_line_535",
+    "source": "\n        type Foo = Unknown.Bar\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:535"
+  },
+  {
+    "name": "upstream_Parser_line_554",
+    "source": "\n        local Types = nil\n        do\n            local Types = nil\n            type Foo = Types.Bar\n        end\n        type Bar = Types.Baz\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:554"
+  },
+  {
+    "name": "upstream_Parser_line_688",
+    "source": "\n        local a = something() :: any\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:688"
+  },
+  {
+    "name": "upstream_Parser_line_702",
+    "source": "\n        local a = one :: any + two :: any\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:702"
+  },
+  {
+    "name": "upstream_Parser_line_984",
+    "source": "\n        while true do\n            continue()\n            continue = 5\n            continue, continue = continue\n            continue\n        end\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:984"
+  },
+  {
+    "name": "upstream_Parser_line_1019",
+    "source": "\n        export()\n        export = 5\n        export, export = export\n        export type A = number\n        type A = number\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1019"
+  },
+  {
+    "name": "upstream_Parser_line_1046",
+    "source": "\n            export function a() end\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1046"
+  },
+  {
+    "name": "upstream_Parser_line_1064",
+    "source": "\n        a += 5\n    ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1064"
+  },
+  {
+    "name": "upstream_Parser_line_1078",
+    "source": "\n            a() += 5\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1078"
+  },
+  {
+    "name": "upstream_Parser_line_1093",
+    "source": "\n            (a) += 5\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1093"
+  },
+  {
+    "name": "upstream_Parser_line_1108",
+    "source": "\n            a, b += 5\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1108"
+  },
+  {
+    "name": "upstream_Parser_line_1123",
+    "source": "\n            _ = `{{oops}}`\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1123"
+  },
+  {
+    "name": "upstream_Parser_line_1138",
+    "source": "\n            _ = `{nice} {{oops}}`\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1138"
+  },
+  {
+    "name": "upstream_Parser_line_1179",
+    "source": "\n            _ = { `{a` }\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1179"
+  },
+  {
+    "name": "upstream_Parser_line_1197",
+    "source": "\n            _ = { `x {\"y\"} {z` }\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1197"
+  },
+  {
+    "name": "upstream_Parser_line_1215",
+    "source": "\n            local a: `what` = `???`\n            local b: `what {\"the\"}` = `???`\n            local c: `what {\"the\"} heck` = `???`\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1215"
+  },
+  {
+    "name": "upstream_Parser_line_1235",
+    "source": "\n            _ = print `{42}`\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1235"
+  },
+  {
+    "name": "upstream_Parser_line_1250",
+    "source": "\n            print(`{}`)\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1250"
+  },
+  {
+    "name": "upstream_Parser_line_1262",
+    "source": "\n            print(`{}{1}`)\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1262"
+  },
+  {
+    "name": "upstream_Parser_line_1277",
+    "source": "\n            local a = `???\\xQQ {1}`\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1277"
+  },
+  {
+    "name": "upstream_Parser_line_1292",
+    "source": "\n            local a = `??? {42 !!}`\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1292"
+  },
+  {
+    "name": "upstream_Parser_line_1307",
+    "source": "-- i am line 1\nfunction BottomUpTree(item, depth)\n  if depth > 0 then\n    local i = item + item\n    depth = depth - 1\n    local left, right = BottomUpTree(i-1, depth), BottomUpTree(i, depth)\n    return { item, left, right }\n  else\n    return { item }\nend\n\nfunction ItemCheck(tree)\n  if tree[2] then\n    return tree[1] + ItemCheck(tree[2]) - ItemCheck(tree[3])\n  else\n    return tree[1]\n  end\nend\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1307"
+  },
+  {
+    "name": "upstream_Parser_line_1340",
+    "source": "-- i am line 1\nfunction ItemCheck(tree)\n  if tree[2] then return tree[1] + ItemCheck(tree[2]) - ItemCheck(tree[3]) else return tree[1]\nend\n\nfunction BottomUpTree(item, depth)\n  if depth > 0 then\n    local i = item + item\n    depth = depth - 1\n    local left, right = BottomUpTree(i-1, depth), BottomUpTree(i, depth)\n    return { item, left, right }\n  else\n    return { item }\n  end\nend\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1340"
+  },
+  {
+    "name": "upstream_Parser_line_1370",
+    "source": "-- i am line 1\nrepeat\n  print(1)\n  repeat\n    print(2)\n  print(3)\nuntil false\n        ",
+    "profile": "upstream",
+    "origin": "Luau 0.748 tests/Parser.test.cpp:1370"
+  }
+]
