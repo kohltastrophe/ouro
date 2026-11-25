@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="ouro-tail" gradientUnits="userSpaceOnUse" x1="26.14" y1="18.72" x2="5.5" y2="16">
+      <stop offset="0" stop-color="#80f" stop-opacity="0.18"/>
+      <stop offset="0.45" stop-color="#b0c" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#f08"/>
+    </linearGradient>
+    <linearGradient id="ouro-head" gradientUnits="userSpaceOnUse" x1="5.5" y1="16" x2="23.42" y2="8.58">
+      <stop offset="0" stop-color="#f08"/>
+      <stop offset="1" stop-color="#f80"/>
+    </linearGradient>
+  </defs>
+  <path d="M26.14 18.72A10.5 10.5 0 0 1 5.5 16" stroke="url(#ouro-tail)" stroke-width="3.6" stroke-linecap="round"/>
+  <path d="M5.5 16A10.5 10.5 0 0 1 23.42 8.58" stroke="url(#ouro-head)" stroke-width="3.6" stroke-linecap="round"/>
+  <path d="M23.7 2.64 23.42 8.58 17.48 8.86" stroke="#f80" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

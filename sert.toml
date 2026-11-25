@@ -1,0 +1,109 @@
+# sert, the shared test toolkit (github.com/kohltastrophe/sert): `python3 tools/sert.py <command>`.
+#
+#   fetch                 the pinned sert package into .sert/ (gitignored)
+#   run [ARGS]            the headless suite ([test].entries; ARGS go to tests/run.luau)
+#   lint / coverage       static checks and line coverage after `run --coverage`
+#
+# Work against a sert checkout: put `[override] sert = "../sert"` in sert.local.toml (gitignored).
+
+[sert]
+version = "0.3.0"
+
+[test]
+entries = ["tests/run.luau"]
+codegen = false
+
+[coverage]
+min = 95
+include = ["src"]
+exclude = ["src/BytecodeDefs.luau", "src/Confusables.luau", "src/Grammar.luau", "src/Token.luau", "src/Types.luau"]
+
+[mutate]
+include = ["src"]
+exclude = ["src/BytecodeDefs.luau", "src/Confusables.luau", "src/Grammar.luau", "src/Token.luau", "src/Types.luau"]
+
+[mutate.specs]
+"src/Arena.luau" = "@file=Lifecycle,Runtime,Types"
+"src/Ast.luau" = "@file=Runtime,Types,Lifecycle,Package"
+"src/Bytecode.luau" = "@file=BytecodeBuilder,Compiler,Package"
+"src/BytecodeBuilder.luau" = "@file=BytecodeBuilder,Compiler,VM"
+"src/BytecodeCodec.luau" = "@file=BytecodeBuilder,Compiler,VM,Package,Safety"
+"src/BytecodeDisassembler.luau" = "@file=BytecodeBuilder,Compiler"
+"src/Compiler.luau" = "@file=Compiler,VM,Package,Safety"
+"src/CompilerBuiltins.luau" = "@file=Compiler,VM"
+"src/CompilerClass.luau" = "@file=Compiler"
+"src/CompilerExpr.luau" = "@file=Compiler,VM"
+"src/CompilerFolding.luau" = "@file=Compiler,VM"
+"src/CompilerInline.luau" = "@file=Compiler,VM"
+"src/CompilerTypes.luau" = "@file=Compiler,VM"
+"src/Declarations.luau" = "@file=Runtime,Types"
+"src/Diagnostics.luau" = "@file=Lifecycle,Lexer"
+"src/VM/Dispatch.luau" = "@file=VM,Package,Safety"
+"src/VM/DispatchGuarded.luau" = "@file=VM,Package,Safety"
+"src/VM/Fastcalls.luau" = "@file=VM,Package,Safety"
+"src/VM/HostEnv.luau" = "@file=VM,Package"
+"src/VM/RuntimeEnv.luau" = "@file=VM,Package,Safety"
+"src/VM/Verifier.luau" = "@file=VM,Package,Safety"
+"src/Lexer.luau" = "@file=Lexer,Lifecycle,Safety"
+"src/Parser.luau" = "@file=Lifecycle,Runtime,Types,Package"
+"src/Profiles.luau" = "@file=Types,Lifecycle,Package"
+"src/RuntimeParser.luau" = "@file=Runtime,Lifecycle,Safety"
+"src/Schema.luau" = "@file=Lifecycle,Types,Runtime"
+"src/State.luau" = "@file=Runtime,Types,Lifecycle"
+"src/TypeParser.luau" = "@file=Types,Runtime,Safety"
+"src/VM/init.luau" = "@file=VM,Package,Safety"
+"src/init.luau" = "@file=Package"
+
+[lint]
+paths = ["src", "tests", "init.luau"]
+project = "tests/studio/test.project.json"
+solvers = ["old", "new"]
+selene = false
+
+[types]
+pass = ["tests/types"]
+fail = ["tests/types/fail"]
+solvers = ["old", "new"]
+
+[[lint.analyze]]
+name = "library"
+paths = ["src", "init.luau", "tests/types/Api.luau"]
+platform = "standard"
+defs = false
+sourcemap = false
+solvers = ["old", "new"]
+
+[[lint.analyze]]
+name = "tests"
+paths = ["tests"]
+ignore = ["tests/studio/**", "tests/types/fail/**"]
+platform = "standard"
+defs = false
+sourcemap = false
+solvers = ["new"]
+
+[[lint.analyze]]
+name = "roblox"
+paths = ["src", "tests/studio/Roblox.spec.luau", "tests/studio/profile.luau"]
+sourcemap = true
+solvers = ["old", "new"]
+
+[release]
+prefix = "v"
+versions = [
+	{ file = "src/init.luau", pattern = 'package\.version = "([^"]+)"' },
+	{ file = ".luaudocs/index.md", pattern = 'kohltastrophe/ouro@([0-9]+\.[0-9]+\.[0-9]+[^\s"]*)' },
+	{ file = ".luaudocs/guide/introduction/getting-started.md", pattern = 'kohltastrophe/ouro@([0-9]+\.[0-9]+\.[0-9]+[^\s"]*)' },
+	{ file = ".luaudocs/guide/introduction/getting-started.md", pattern = 'version = "\^([0-9]+\.[0-9]+\.[0-9]+[^\s"]*)"' },
+]
+
+[cloud]
+project = "tests/studio/test.project.json"
+specs = ["tests/studio/*.spec.luau"]
+
+[studio]
+mode = "edit"
+project = "tests/studio/test.project.json"
+specs = ["tests/studio/*.spec.luau"]
+out = "build/sert"
+timeout = 120

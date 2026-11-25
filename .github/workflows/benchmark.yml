@@ -1,0 +1,166 @@
+name: Benchmarks
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/benchmark.yml
+      - src/**
+      - init.luau
+      - UPSTREAM.json
+      - docs/benchmarks/**
+  pull_request:
+    paths:
+      - .github/workflows/benchmark.yml
+      - src/**
+      - init.luau
+      - UPSTREAM.json
+      - docs/benchmarks/**
+  workflow_dispatch:
+
+env:
+  FIU_SHA: "fa1983d39f11f2b650b871d7a2d4e3b4c3e4ef2b"
+  LUAUCEPTION_VERSION: "0.654"
+
+concurrency:
+  group: benchmarks-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install luau
+        run: |
+          set -euo pipefail
+          LUAU_VERSION=$(python3 -c 'import json; print(json.load(open("UPSTREAM.json"))["version"])')
+          curl -fsSL --retry 3 --retry-all-errors -o /tmp/luau.zip \
+            "https://github.com/luau-lang/luau/releases/download/${LUAU_VERSION}/luau-ubuntu.zip"
+          unzip -o /tmp/luau.zip -d /tmp/luau-bin
+          chmod +x /tmp/luau-bin/luau
+          sudo mv /tmp/luau-bin/luau /usr/local/bin/luau
+          rm -rf /tmp/luau.zip /tmp/luau-bin
+
+      - name: Download pinned Fiu and LuauCeption
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/fiu" "$RUNNER_TEMP/luauception"
+          curl -fsSL --retry 3 --retry-all-errors -o "$RUNNER_TEMP/fiu/Source.lua" \
+            "https://raw.githubusercontent.com/rce-incorporated/Fiu/${FIU_SHA}/Source.lua"
+          for part in Full Compiler VM; do
+            curl -fsSL --retry 3 --retry-all-errors -o "$RUNNER_TEMP/luauception/${part}.luau" \
+              "https://github.com/RadiatedExodus/LuauCeption/releases/download/${LUAUCEPTION_VERSION}/Luau.LuauCeption.${part}.${LUAUCEPTION_VERSION}.luau"
+          done
+
+      - name: Verify correctness
+        run: |
+          python3 docs/benchmarks/bench.py --verify \
+            --fiu "$RUNNER_TEMP/fiu/Source.lua" \
+            --luauception "$RUNNER_TEMP/luauception"
+
+  benchmark:
+    needs: verify
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install luau
+        run: |
+          set -euo pipefail
+          LUAU_VERSION=$(python3 -c 'import json; print(json.load(open("UPSTREAM.json"))["version"])')
+          curl -fsSL --retry 3 --retry-all-errors -o /tmp/luau.zip \
+            "https://github.com/luau-lang/luau/releases/download/${LUAU_VERSION}/luau-ubuntu.zip"
+          unzip -o /tmp/luau.zip -d /tmp/luau-bin
+          chmod +x /tmp/luau-bin/luau
+          sudo mv /tmp/luau-bin/luau /usr/local/bin/luau
+          rm -rf /tmp/luau.zip /tmp/luau-bin
+
+      - name: Download pinned Fiu and LuauCeption
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/fiu" "$RUNNER_TEMP/luauception"
+          curl -fsSL --retry 3 --retry-all-errors -o "$RUNNER_TEMP/fiu/Source.lua" \
+            "https://raw.githubusercontent.com/rce-incorporated/Fiu/${FIU_SHA}/Source.lua"
+          for part in Full Compiler VM; do
+            curl -fsSL --retry 3 --retry-all-errors -o "$RUNNER_TEMP/luauception/${part}.luau" \
+              "https://github.com/RadiatedExodus/LuauCeption/releases/download/${LUAUCEPTION_VERSION}/Luau.LuauCeption.${part}.${LUAUCEPTION_VERSION}.luau"
+          done
+
+      - name: Run benchmarks and render charts
+        run: |
+          mkdir -p "$RUNNER_TEMP/bench"
+          python3 docs/benchmarks/bench.py \
+            --fiu "$RUNNER_TEMP/fiu/Source.lua" \
+            --luauception "$RUNNER_TEMP/luauception" \
+            --fiu-ref "${FIU_SHA:0:7}" \
+            --lc-version "$LUAUCEPTION_VERSION" \
+            --out "$RUNNER_TEMP/bench/results.json" \
+            --out-dir "$RUNNER_TEMP/bench"
+
+      - name: Upload benchmark artifacts
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: benchmark-results
+          path: |
+            ${{ runner.temp }}/bench/chart.svg
+            ${{ runner.temp }}/bench/chart-small.svg
+            ${{ runner.temp }}/bench/chart-interp.svg
+            ${{ runner.temp }}/bench/results.json
+
+      - name: Publish charts and data to assets branch
+        if: github.ref == 'refs/heads/main'
+        run: |
+          set -euo pipefail
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          out="$RUNNER_TEMP/bench"
+          if git fetch --depth=1 origin assets 2>/dev/null; then
+            if git cat-file -p FETCH_HEAD:chart.svg 2>/dev/null | cmp -s - "$out/chart.svg" && \
+               git cat-file -p FETCH_HEAD:chart-small.svg 2>/dev/null | cmp -s - "$out/chart-small.svg" && \
+               git cat-file -p FETCH_HEAD:chart-interp.svg 2>/dev/null | cmp -s - "$out/chart-interp.svg" && \
+               git cat-file -p FETCH_HEAD:results.json 2>/dev/null | cmp -s - "$out/results.json"; then
+              echo "All assets unchanged on assets branch; nothing to publish."
+              exit 0
+            fi
+          fi
+
+          blob_main=$(git hash-object -w "$out/chart.svg")
+          blob_small=$(git hash-object -w "$out/chart-small.svg")
+          blob_interp=$(git hash-object -w "$out/chart-interp.svg")
+          blob_results=$(git hash-object -w "$out/results.json")
+
+          tree=$(printf '100644 blob %s\tchart.svg\n100644 blob %s\tchart-small.svg\n100644 blob %s\tchart-interp.svg\n100644 blob %s\tresults.json\n' \
+            "$blob_main" "$blob_small" "$blob_interp" "$blob_results" | git mktree)
+
+          commit=$(git commit-tree "$tree" -m "Update benchmark charts and JSON data")
+          git push --force origin "$commit:refs/heads/assets"
+
+          echo "Published chart.svg, chart-small.svg, chart-interp.svg, and results.json to assets ($commit)."

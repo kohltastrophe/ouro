@@ -1,0 +1,21 @@
+name = "kohltastrophe/ouro"
+version = "0.1.0"
+description = "Self-hosted Luau 0.748 lexer, parser, bytecode compiler, and sandboxed register VM in pure Luau."
+authors = ["Kohl <hi@kohl.gg>"]
+repository = "https://github.com/kohltastrophe/ouro"
+license = "MIT"
+includes = [
+	"pesde.toml",
+	"README.md",
+	"LICENSE.md",
+	"UPSTREAM.json",
+	"src/**",
+]
+
+[target]
+environment = "roblox"
+lib = "src/init.luau"
+build_files = ["src"]
+
+[indices]
+default = "https://github.com/pesde-pkg/index"
