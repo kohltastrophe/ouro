@@ -1,0 +1,136 @@
+--!strict
+-- Field descriptors: n=node, l=node list, b=binding declaration, B=binding declaration list,
+-- local=local reference, s=symbol, v=scalar, p=location, r=raw list. Adapter name and tail key are optional.
+local Arena = require("./Arena")
+export type FieldDescriptor = { string }
+local Schema: { [string | number]: { FieldDescriptor } } = {
+	AstExprGroup = { { "expr", "n" } },
+	AstExprConstantBool = { { "value", "v" } },
+	AstExprConstantNumber = { { "value", "v" } },
+	AstExprConstantString = { { "value", "v" } },
+	AstExprLocal = { { "local", "local" } },
+	AstExprGlobal = { { "name", "s", "global" } },
+	AstExprCall = {
+		{ "func", "n" },
+		{ "typeArguments", "l" },
+		{ "args", "l" },
+		{ "self", "v" },
+	},
+	AstExprIndexName = { { "expr", "n" }, { "index", "s" }, { "op", "v" } },
+	AstExprIndexExpr = { { "expr", "n" }, { "index", "n" } },
+	AstExprFunction = {
+		{ "attributes", "l" },
+		{ "generics", "l" },
+		{ "genericPacks", "l" },
+		{ "self", "b" },
+		{ "args", "B" },
+		{ "returnAnnotation", "n" },
+		{ "vararg", "v" },
+		{ "varargLocation", "p" },
+		{ "varargAnnotation", "n" },
+		{ "body", "n" },
+		{ "functionDepth", "v" },
+		{ "debugname", "s" },
+	},
+	AstExprTable = { { "items", "items" } },
+	AstExprUnary = { { "op", "v" }, { "expr", "n" } },
+	AstExprBinary = { { "op", "v" }, { "left", "n" }, { "right", "n" } },
+	AstExprTypeAssertion = { { "expr", "n" }, { "annotation", "n" } },
+	AstExprIfElse = {
+		{ "condition", "n" },
+		{ "hasThen", "v" },
+		{ "trueExpr", "n" },
+		{ "hasElse", "v" },
+		{ "falseExpr", "n" },
+		{ "conditionLocal", "b" },
+	},
+	AstExprInterpString = { { "strings", "r" }, { "expressions", "l" } },
+	AstExprInstantiate = { { "expr", "n" }, { "typeArguments", "l" } },
+	AstExprError = { { "expressions", "l" }, { "messageIndex", "v" } },
+	AstStatBlock = { { "hasEnd", "v" }, { "body", "l" } },
+	AstStatIf = { { "condition", "n" }, { "thenbody", "n" }, { "elsebody", "n" }, { "conditionLocal", "b" } },
+	AstStatWhile = { { "condition", "n" }, { "body", "n" }, { "hasDo", "v" }, { "conditionLocal", "b" } },
+	AstStatRepeat = { { "condition", "n" }, { "body", "n" } },
+	AstStatReturn = { { "list", "l" } },
+	AstStatExpr = { { "expr", "n" } },
+	AstStatLocal = { { "vars", "B" }, { "values", "l" } },
+	AstStatFor = { { "var", "b" }, { "from", "n" }, { "to", "n" }, { "step", "n" }, { "body", "n" }, { "hasDo", "v" } },
+	AstStatForIn = { { "vars", "B" }, { "values", "l" }, { "body", "n" }, { "hasIn", "v" }, { "hasDo", "v" } },
+	AstStatAssign = { { "vars", "l" }, { "values", "l" } },
+	AstStatCompoundAssign = { { "op", "v" }, { "var", "n" }, { "value", "n" } },
+	AstStatFunction = { { "name", "n" }, { "func", "n" } },
+	AstStatLocalFunction = { { "name", "b" }, { "func", "n" } },
+	AstStatTypeAlias = {
+		{ "name", "s" },
+		{ "generics", "l" },
+		{ "genericPacks", "l" },
+		{ "type", "n", "value" },
+		{ "exported", "v" },
+	},
+	AstStatTypeFunction = { { "name", "s" }, { "body", "n" }, { "exported", "v" }, { "hasErrors", "v" } },
+	AstStatDeclareGlobal = { { "name", "s" }, { "type", "n", "luauType" } },
+	AstStatDeclareFunction = {
+		{ "attributes", "l" },
+		{ "name", "s" },
+		{ "generics", "l" },
+		{ "genericPacks", "l" },
+		{ "params", "typelist", "params", "paramTailType" },
+		{ "paramNames", "l" },
+		{ "vararg", "v" },
+		{ "varargLocation", "p" },
+		{ "retTypes", "n" },
+	},
+	AstStatDeclareExternType = { { "name", "s" }, { "superName", "s" }, { "props", "l" }, { "indexer", "n" } },
+	AstStatClass = {
+		{ "declModifier", "v" },
+		{ "exprName", "n" },
+		{ "localName", "b" },
+		{ "super", "n" },
+		{ "members", "l" },
+		{ "open", "v" },
+	},
+	AstStatError = { { "expressions", "l" }, { "statements", "l" }, { "messageIndex", "v" } },
+	AstGenericType = { { "name", "s" }, { "defaultValue", "n", "luauType" } },
+	AstGenericTypePack = { { "name", "s" }, { "defaultValue", "n", "luauType" } },
+	AstTypeReference = { { "prefix", "s" }, { "prefixLocal", "local" }, { "name", "s" }, { "parameters", "l" } },
+	AstTypeTable = { { "props", "l" }, { "indexer", "n" } },
+	AstTableProp = { { "name", "s" }, { "type", "n", "propType" } },
+	AstTableIndexer = { { "indexType", "n" }, { "resultType", "n" } },
+	AstTypeFunction = {
+		{ "attributes", "l" },
+		{ "generics", "l" },
+		{ "genericPacks", "l" },
+		{ "argTypes", "typelist", "argTypes", "argTailType" },
+		{ "argNames", "l" },
+		{ "returnTypes", "n" },
+	},
+	AstTypeTypeof = { { "expr", "n" } },
+	AstTypeOptional = {},
+	AstTypeUnion = { { "types", "l" } },
+	AstTypeIntersection = { { "types", "l" } },
+	AstTypeError = { { "types", "l" }, { "messageIndex", "v" }, { "isMissing", "v" } },
+	AstTypeSingletonBool = { { "value", "v" } },
+	AstTypeSingletonString = { { "value", "v" } },
+	AstTypeGroup = { { "type", "n", "inner" } },
+	AstTypePackExplicit = { { "types", "typelist", "typeList", "tailType" } },
+	AstTypePackVariadic = { { "variadicType", "n" } },
+	AstTypePackGeneric = { { "genericName", "s" } },
+	AstArgumentName = { { "name", "s" } },
+	AstDeclaredExternTypeProperty = { { "name", "s" }, { "ty", "n", "luauType" } },
+	AstClassProperty = { { "name", "s" }, { "ty", "n", "luauType" }, { "access", "v" } },
+	AstClassMethod = { { "functionName", "s" }, { "function", "n" }, { "access", "v" } },
+	AstAttr = { { "name", "s" }, { "args", "l" } },
+}
+for name, fields in table.clone(Schema) do
+	for _, field in fields do
+		table.freeze(field)
+	end
+	table.freeze(fields)
+	if type(name) == "string" then
+		local kindId = (Arena.kindIds :: { [string]: number })[name]
+		if kindId then
+			Schema[kindId] = fields
+		end
+	end
+end
+return table.freeze(Schema)

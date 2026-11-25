@@ -1,0 +1,7 @@
+[tools]
+luau = "luau-lang/luau@0.748"
+rojo = "rojo-rbx/rojo@7.7.1"
+stylua = "JohnnyMorganz/StyLua@2.6.0"
+luau-lsp = "JohnnyMorganz/luau-lsp@1.70.1"
+wally = "UpliftGames/wally@0.3.2"
+pesde = "pesde-pkg/pesde@0.7.4+registry.0.2.3"
