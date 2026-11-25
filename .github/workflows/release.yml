@@ -1,0 +1,131 @@
+# Release Ouro. kohltastrophe/release keeps a release PR open on main that bumps wally.toml, pesde.toml, and src/init.luau;
+# merging it tags v<version>, builds the .rbxm and package assets, creates the GitHub release, updates the `dist`
+# branch, and publishes to Wally and pesde.
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Build and package only; no GitHub release, Wally, or pesde publish
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    environment: release
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Release PR or Release
+        id: release
+        uses: kohltastrophe/release@v1
+        with:
+          wait-for-ci: ci.yml
+
+      - uses: CompeyDev/setup-rokit@1d9390883f7ebce19d48f5b8d006e11d387c92ab # v0.2.1
+        if: steps.release.outputs.should_build == 'true'
+        with:
+          version: v1.2.0
+
+      - name: Build the release assets
+        if: steps.release.outputs.should_build == 'true'
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          mkdir -p dist
+          rojo build default.project.json --output dist/Ouro.rbxm
+          wally package --list
+          wally package --output "$RUNNER_TEMP/wally.zip"
+          size=$(stat -c %s "$RUNNER_TEMP/wally.zip")
+          echo "Wally package: $size bytes (the registry refuses more than 2 MiB)"
+          [ "$size" -le 2097152 ]
+          cp "$RUNNER_TEMP/wally.zip" "dist/Ouro-$VERSION-package.zip"
+          python3 .github/scripts/publish_pesde.py
+
+      - name: Create GitHub release
+        if: steps.release.outputs.should_build == 'true'
+        uses: kohltastrophe/release@v1
+        with:
+          mode: publish
+          title: Ouro {version}
+          checksums: dist/SHA256SUMS
+          files: |
+            dist/Ouro.rbxm
+            dist/Ouro-{version}-package.zip
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always() && steps.release.outputs.should_build == 'true'
+        with:
+          name: release
+          path: dist/
+          if-no-files-found: error
+          overwrite: true
+
+      # The `dist` branch: one commit per release holding only the runtime tree (`default.project.json`, `init.luau`,
+      # `src`, `LICENSE.md`, and `UPSTREAM.json`), for consumers that vendor by git rather than through Wally or pesde.
+      - name: Update dist branch
+        if: steps.release.outputs.should_release == 'true'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          parent=""
+          if git ls-remote --exit-code --heads origin dist > /dev/null; then
+            git fetch --no-tags origin refs/heads/dist:refs/heads/dist
+            parent="-p refs/heads/dist"
+          fi
+          tree=$(git ls-tree "$GITHUB_SHA" -- default.project.json init.luau src LICENSE.md UPSTREAM.json | git mktree)
+          if [ -z "$parent" ] || [ "$(git rev-parse refs/heads/dist^{tree})" != "$tree" ]; then
+            commit=$(git commit-tree "$tree" $parent -m "dist: Ouro $VERSION (from $GITHUB_SHA)")
+            git update-ref refs/heads/dist "$commit"
+            git log -1 --format='%H %s' refs/heads/dist --
+            git push origin "$commit:refs/heads/dist"
+          fi
+
+      - name: Publish kohltastrophe/ouro to Wally
+        if: steps.release.outputs.should_release == 'true'
+        env:
+          WALLY_AUTH_TOKEN: ${{ secrets.WALLY_AUTH_TOKEN }}
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          if [ -z "$WALLY_AUTH_TOKEN" ]; then echo "::notice::No WALLY_AUTH_TOKEN secret: Wally publish skipped"; exit 0; fi
+          wally login --token "$WALLY_AUTH_TOKEN"
+          # `wally publish` exits 0 even when the registry refuses the package, so read what it printed.
+          output=$(wally publish 2>&1) || { echo "$output"; exit 1; }
+          echo "$output"
+          case "$output" in
+            *"published successfully"*) ;;
+            *"already exists"*) echo "::notice::kohltastrophe/ouro@$VERSION was already on Wally" ;;
+            *) echo "::error::Wally did not accept kohltastrophe/ouro@$VERSION"; exit 1 ;;
+          esac
+
+      - name: Publish kohltastrophe/ouro to pesde
+        if: steps.release.outputs.should_release == 'true'
+        env:
+          PESDE_AUTH_TOKEN: ${{ secrets.PESDE_AUTH_TOKEN }}
+        run: |
+          if [ -z "$PESDE_AUTH_TOKEN" ]; then echo "::notice::No PESDE_AUTH_TOKEN secret: pesde publish skipped"; exit 0; fi
+          pesde auth login --token "$PESDE_AUTH_TOKEN"
+          python3 .github/scripts/publish_pesde.py --publish

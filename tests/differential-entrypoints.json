@@ -1,0 +1,107 @@
+[
+  {
+    "name": "expression_0",
+    "source": "1+2*3",
+    "mode": "expression",
+    "profile": "upstream",
+    "origin": "entrypoint"
+  },
+  {
+    "name": "expression_1",
+    "source": "f(1,2).x",
+    "mode": "expression",
+    "profile": "upstream",
+    "origin": "entrypoint"
+  },
+  {
+    "name": "expression_2",
+    "source": "function<T>(x:T):T return x end",
+    "mode": "expression",
+    "profile": "upstream",
+    "origin": "entrypoint"
+  },
+  {
+    "name": "expression_3",
+    "source": "if x then y else z",
+    "mode": "expression",
+    "profile": "upstream",
+    "origin": "entrypoint"
+  },
+  {
+    "name": "expression_4",
+    "source": "`a {1+2} b`",
+    "mode": "expression",
+    "profile": "upstream",
+    "origin": "entrypoint"
+  },
+  {
+    "name": "expression_5",
+    "source": "1 2",
+    "mode": "expression",
+    "profile": "upstream",
+    "origin": "entrypoint"
+  },
+  {
+    "name": "expression_6",
+    "source": "{x=1,[2]=3}",
+    "mode": "expression",
+    "profile": "upstream",
+    "origin": "entrypoint"
+  },
+  {
+    "name": "expression_7",
+    "source": "local",
+    "mode": "expression",
+    "profile": "upstream",
+    "origin": "entrypoint"
+  },
+  {
+    "name": "type_0",
+    "source": "number?",
+    "mode": "type",
+    "profile": "upstream",
+    "origin": "entrypoint"
+  },
+  {
+    "name": "type_1",
+    "source": "<T,U...>(T,U...)->(T,U...)",
+    "mode": "type",
+    "profile": "upstream",
+    "origin": "entrypoint"
+  },
+  {
+    "name": "type_2",
+    "source": "{read x:number,[string]:number}",
+    "mode": "type",
+    "profile": "upstream",
+    "origin": "entrypoint"
+  },
+  {
+    "name": "type_3",
+    "source": "typeof(f(1))",
+    "mode": "type",
+    "profile": "upstream",
+    "origin": "entrypoint"
+  },
+  {
+    "name": "type_4",
+    "source": "((number&string)|false)",
+    "mode": "type",
+    "profile": "upstream",
+    "origin": "entrypoint"
+  },
+  {
+    "name": "type_5",
+    "source": "number |",
+    "mode": "type",
+    "profile": "upstream",
+    "origin": "entrypoint"
+  },
+  {
+    "name": "type_6",
+    "source": "number string",
+    "mode": "type",
+    "profile": "upstream",
+    "origin": "entrypoint"
+  }
+]

@@ -1,0 +1,1279 @@
+{
+  "meta": {
+    "generated_at": "2026-11-28T01:03:04.007446+00:00",
+    "luau_version": "0.748",
+    "ouro_version": "0.1.0",
+    "fiu_label": "fast",
+    "luauception_version": "0.654",
+    "cpu": "AMD Ryzen 7 5800X 8-Core Processor",
+    "os": "Linux x86_64",
+    "instruction_limit_guarded": 50000000,
+    "footprint": {
+      "ouro": {
+        "files": 35,
+        "bytes": 1293109
+      },
+      "fiu": {
+        "files": 1,
+        "bytes": 45064
+      },
+      "luauception": {
+        "full_bytes": 5671228,
+        "compiler_bytes": 3126712,
+        "vm_bytes": 3148338
+      }
+    }
+  },
+  "modes": {
+    "codegen": {
+      "cold_load_run": {
+        "desc": "fresh env + 1k loop",
+        "fiu_default": {
+          "minMs": 0.111271,
+          "p50Ms": 0.11551,
+          "status": "ok"
+        },
+        "fiu_fast": {
+          "minMs": 0.11337,
+          "p50Ms": 0.120781,
+          "status": "ok"
+        },
+        "luauception": {
+          "minMs": 5.37273,
+          "p50Ms": 6.23031,
+          "status": "ok"
+        },
+        "name": "cold-load-run",
+        "ouro": {
+          "minMs": 0.05141,
+          "p50Ms": 0.05719,
+          "status": "ok"
+        }
+      },
+      "competitors": {
+        "fiu": true,
+        "luauception": true
+      },
+      "compile": [
+        {
+          "bytecodeBytes": 86,
+          "bytes": 56,
+          "compile_only_o2_p50_ms": 0.03298,
+          "desc": "small loop chunk",
+          "lex_p50_ms": 0.00462997,
+          "luauception": {
+            "minMs": 0.671052,
+            "p50Ms": 0.679332,
+            "status": "ok"
+          },
+          "name": "tiny-120B",
+          "ouro": {
+            "minMs": 0.05501,
+            "p50Ms": 0.05576,
+            "status": "ok"
+          },
+          "parse_p50_ms": 0.01243
+        },
+        {
+          "bytecodeBytes": 10628,
+          "bytes": 10240,
+          "compile_only_o2_p50_ms": 3.82064,
+          "desc": "10 KiB runtime code",
+          "lex_p50_ms": 0.591212,
+          "luauception": {
+            "minMs": 87.6327,
+            "p50Ms": 89.6723,
+            "status": "ok"
+          },
+          "name": "runtime-10KiB",
+          "ouro": {
+            "minMs": 5.17533,
+            "p50Ms": 5.3303,
+            "status": "ok"
+          },
+          "parse_p50_ms": 1.94562
+        },
+        {
+          "bytecodeBytes": 54019,
+          "bytes": 51200,
+          "compile_only_o2_p50_ms": 21.274,
+          "desc": "50 KiB runtime code",
+          "lex_p50_ms": 2.83233,
+          "luauception": {
+            "minMs": 397.687,
+            "p50Ms": 408.663,
+            "status": "ok"
+          },
+          "name": "runtime-50KiB",
+          "ouro": {
+            "minMs": 31.6449,
+            "p50Ms": 33.9838,
+            "status": "ok"
+          },
+          "parse_p50_ms": 9.40074
+        },
+        {
+          "bytecodeBytes": 271252,
+          "bytes": 256000,
+          "compile_only_o2_p50_ms": 133.027,
+          "desc": "250 KiB runtime code",
+          "lex_p50_ms": 13.7498,
+          "luauception": {
+            "minMs": 2111.11,
+            "p50Ms": 2248.89,
+            "status": "ok"
+          },
+          "name": "runtime-250KiB",
+          "ouro": {
+            "minMs": 176.384,
+            "p50Ms": 197.567,
+            "status": "ok"
+          },
+          "parse_p50_ms": 48.3076
+        },
+        {
+          "bytecodeBytes": 41,
+          "bytes": 51200,
+          "compile_only_o2_p50_ms": 0.765482,
+          "desc": "50 KiB generics & types",
+          "lex_p50_ms": 3.70796,
+          "luauception": {
+            "minMs": 234.411,
+            "p50Ms": 244.866,
+            "status": "ok"
+          },
+          "name": "types-50KiB",
+          "ouro": {
+            "minMs": 10.4646,
+            "p50Ms": 12.2242,
+            "status": "ok"
+          },
+          "parse_p50_ms": 9.47083
+        }
+      ],
+      "deserialize": [
+        {
+          "bytecodeBytes": 10628,
+          "deserialize": {
+            "minMs": 0.079901,
+            "p50Ms": 0.11011,
+            "status": "ok"
+          },
+          "loadBytecode": {
+            "minMs": 0.222751,
+            "p50Ms": 0.31223,
+            "status": "ok"
+          },
+          "name": "runtime-10KiB"
+        },
+        {
+          "bytecodeBytes": 54019,
+          "deserialize": {
+            "minMs": 0.427201,
+            "p50Ms": 0.479482,
+            "status": "ok"
+          },
+          "loadBytecode": {
+            "minMs": 1.02208,
+            "p50Ms": 1.19169,
+            "status": "ok"
+          },
+          "name": "runtime-50KiB"
+        },
+        {
+          "bytecodeBytes": 271252,
+          "deserialize": {
+            "minMs": 2.31314,
+            "p50Ms": 3.73833,
+            "status": "ok"
+          },
+          "loadBytecode": {
+            "minMs": 5.5778,
+            "p50Ms": 5.92506,
+            "status": "ok"
+          },
+          "name": "runtime-250KiB"
+        }
+      ],
+      "vm": [
+        {
+          "desc": "mixed loop/fib/meta/co",
+          "fiu_default": {
+            "minMs": 17.2404,
+            "p50Ms": 18.3614,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 15.4326,
+            "p50Ms": 16.485,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.489462,
+            "p50Ms": 0.553642,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 254.862,
+            "p50Ms": 261.637,
+            "status": "ok"
+          },
+          "name": "vm-suite",
+          "ouro": {
+            "minMs": 6.63217,
+            "p50Ms": 6.9654,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 7.78133,
+            "p50Ms": 8.34634,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "100k arithmetic loop",
+          "fiu_default": {
+            "minMs": 20.0005,
+            "p50Ms": 21.8077,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 19.7462,
+            "p50Ms": 20.2303,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 1.50326,
+            "p50Ms": 1.54045,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 553.094,
+            "p50Ms": 565.08,
+            "status": "ok"
+          },
+          "name": "arith-100k",
+          "ouro": {
+            "minMs": 7.39895,
+            "p50Ms": 7.60113,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 8.54605,
+            "p50Ms": 8.77169,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "recursive fib(24)",
+          "fiu_default": {
+            "minMs": 257.594,
+            "p50Ms": 284.626,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 240.488,
+            "p50Ms": 268.78,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 2.46669,
+            "p50Ms": 2.61268,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 1189.66,
+            "p50Ms": 1267.67,
+            "status": "ok"
+          },
+          "name": "fib-24",
+          "ouro": {
+            "minMs": 34.1205,
+            "p50Ms": 34.7821,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 42.2855,
+            "p50Ms": 43.2181,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "20k upvalue closures",
+          "fiu_default": {
+            "minMs": 14.6341,
+            "p50Ms": 15.3256,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 15.0239,
+            "p50Ms": 16.379,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.665242,
+            "p50Ms": 0.838693,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 343.321,
+            "p50Ms": 360.232,
+            "status": "ok"
+          },
+          "name": "closures-20k",
+          "ouro": {
+            "minMs": 9.90788,
+            "p50Ms": 12.0011,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 12.4769,
+            "p50Ms": 12.9658,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "5k metatable & method ops",
+          "fiu_default": {
+            "minMs": 21.4895,
+            "p50Ms": 22.6948,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 20.6061,
+            "p50Ms": 21.3815,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.596061,
+            "p50Ms": 0.600652,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 336.307,
+            "p50Ms": 380.823,
+            "status": "ok"
+          },
+          "name": "tables-meta-5k",
+          "ouro": {
+            "minMs": 9.73695,
+            "p50Ms": 9.92349,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 11.0602,
+            "p50Ms": 11.1954,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "20k math builtins & imports",
+          "fiu_default": {
+            "minMs": 32.2768,
+            "p50Ms": 33.9526,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 33.4544,
+            "p50Ms": 36.6672,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.903782,
+            "p50Ms": 0.937073,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 266.592,
+            "p50Ms": 288.239,
+            "status": "ok"
+          },
+          "name": "imports-20k",
+          "ouro": {
+            "minMs": 13.8568,
+            "p50Ms": 20.4197,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 9.35773,
+            "p50Ms": 17.6645,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "20k global reads & writes",
+          "fiu_default": {
+            "minMs": 3.21074,
+            "p50Ms": 3.52353,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 3.0522,
+            "p50Ms": 3.50094,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.198801,
+            "p50Ms": 0.205551,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 105.312,
+            "p50Ms": 107.291,
+            "status": "ok"
+          },
+          "name": "globals-20k",
+          "ouro": {
+            "minMs": 1.57964,
+            "p50Ms": 1.65407,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 2.0258,
+            "p50Ms": 2.0732,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "2k protected calls (25% throw)",
+          "fiu_default": {
+            "minMs": 6.3468,
+            "p50Ms": 6.81967,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 4.55977,
+            "p50Ms": 6.64398,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.925583,
+            "p50Ms": 1.29957,
+            "status": "ok"
+          },
+          "luauception": {
+            "error": "/tmp/luauception-0.654/Full.luau:174773: /tmp/luauception-0.654/Full.luau:174773: /tmp/luauception-0.654/Full.luau:174846: Infinity",
+            "status": "error"
+          },
+          "name": "pcall-2k",
+          "ouro": {
+            "minMs": 2.11372,
+            "p50Ms": 2.47615,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 3.7235,
+            "p50Ms": 4.23352,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "20k ipairs table scans",
+          "fiu_default": {
+            "minMs": 5.2883,
+            "p50Ms": 6.79678,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 4.54085,
+            "p50Ms": 5.44294,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.10337,
+            "p50Ms": 0.10543,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 82.1012,
+            "p50Ms": 85.4646,
+            "status": "ok"
+          },
+          "name": "forin-gen-20k",
+          "ouro": {
+            "minMs": 1.4327,
+            "p50Ms": 2.05517,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 2.08369,
+            "p50Ms": 2.40337,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "quicksort 2,000 numbers",
+          "fiu_default": {
+            "minMs": 11.1366,
+            "p50Ms": 11.3307,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 12.4451,
+            "p50Ms": 17.51,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.783022,
+            "p50Ms": 0.786212,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 298.03,
+            "p50Ms": 333.233,
+            "status": "ok"
+          },
+          "name": "quicksort-2k",
+          "ouro": {
+            "minMs": 4.85387,
+            "p50Ms": 4.8979,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 5.48003,
+            "p50Ms": 5.60749,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "10k concat & string calls",
+          "fiu_default": {
+            "minMs": 20.9107,
+            "p50Ms": 21.7755,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 17.0889,
+            "p50Ms": 18.7537,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 1.24773,
+            "p50Ms": 1.37905,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 445.585,
+            "p50Ms": 467.504,
+            "status": "ok"
+          },
+          "name": "string-ops-10k",
+          "ouro": {
+            "minMs": 5.11329,
+            "p50Ms": 5.67198,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 5.44591,
+            "p50Ms": 5.80574,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "10k vararg select loops",
+          "fiu_default": {
+            "minMs": 45.2706,
+            "p50Ms": 52.2278,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 41.2803,
+            "p50Ms": 47.9572,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.790602,
+            "p50Ms": 0.813602,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 404.7,
+            "p50Ms": 411.608,
+            "status": "ok"
+          },
+          "name": "varargs-10k",
+          "ouro": {
+            "minMs": 14.3803,
+            "p50Ms": 15.1972,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 17.2345,
+            "p50Ms": 18.782,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "20k dictionary field ops",
+          "fiu_default": {
+            "minMs": 19.7772,
+            "p50Ms": 20.7515,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 22.5803,
+            "p50Ms": 30.8389,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 1.50511,
+            "p50Ms": 1.60544,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 576.624,
+            "p50Ms": 587.711,
+            "status": "ok"
+          },
+          "name": "table-dict-20k",
+          "ouro": {
+            "minMs": 9.27781,
+            "p50Ms": 9.52394,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 10.9958,
+            "p50Ms": 11.4967,
+            "status": "ok"
+          }
+        }
+      ],
+      "cold_require": {
+        "ouro_root_ms": 0.861,
+        "ouro_vm_ms": 45.224,
+        "ouro_parser_ms": 30.786,
+        "ouro_compiler_ms": 60.159,
+        "ouro_total_ms": 137.01,
+        "fiu_ms": 10.627,
+        "luauception_full_ms": 731.462,
+        "luauception_compiler_ms": 571.103,
+        "luauception_vm_ms": 552.864
+      }
+    },
+    "interp": {
+      "cold_load_run": {
+        "desc": "fresh env + 1k loop",
+        "fiu_default": {
+          "minMs": 0.635562,
+          "p50Ms": 0.652222,
+          "status": "ok"
+        },
+        "fiu_fast": {
+          "minMs": 0.643842,
+          "p50Ms": 0.653322,
+          "status": "ok"
+        },
+        "luauception": {
+          "minMs": 5.04366,
+          "p50Ms": 5.36201,
+          "status": "ok"
+        },
+        "name": "cold-load-run",
+        "ouro": {
+          "minMs": 0.14072,
+          "p50Ms": 0.14376,
+          "status": "ok"
+        }
+      },
+      "competitors": {
+        "fiu": true,
+        "luauception": true
+      },
+      "compile": [
+        {
+          "bytecodeBytes": 86,
+          "bytes": 56,
+          "compile_only_o2_p50_ms": 0.04746,
+          "desc": "small loop chunk",
+          "lex_p50_ms": 0.00831002,
+          "luauception": {
+            "minMs": 0.668412,
+            "p50Ms": 0.673442,
+            "status": "ok"
+          },
+          "name": "tiny-120B",
+          "ouro": {
+            "minMs": 0.075131,
+            "p50Ms": 0.0775601,
+            "status": "ok"
+          },
+          "parse_p50_ms": 0.0225601
+        },
+        {
+          "bytecodeBytes": 10628,
+          "bytes": 10240,
+          "compile_only_o2_p50_ms": 8.58148,
+          "desc": "10 KiB runtime code",
+          "lex_p50_ms": 1.15601,
+          "luauception": {
+            "minMs": 80.4728,
+            "p50Ms": 83.2913,
+            "status": "ok"
+          },
+          "name": "runtime-10KiB",
+          "ouro": {
+            "minMs": 10.6099,
+            "p50Ms": 10.6883,
+            "status": "ok"
+          },
+          "parse_p50_ms": 3.36769
+        },
+        {
+          "bytecodeBytes": 54019,
+          "bytes": 51200,
+          "compile_only_o2_p50_ms": 42.3687,
+          "desc": "50 KiB runtime code",
+          "lex_p50_ms": 5.82312,
+          "luauception": {
+            "minMs": 404.1,
+            "p50Ms": 424.391,
+            "status": "ok"
+          },
+          "name": "runtime-50KiB",
+          "ouro": {
+            "minMs": 58.6511,
+            "p50Ms": 61.2302,
+            "status": "ok"
+          },
+          "parse_p50_ms": 17.8451
+        },
+        {
+          "bytecodeBytes": 271252,
+          "bytes": 256000,
+          "compile_only_o2_p50_ms": 213.783,
+          "desc": "250 KiB runtime code",
+          "lex_p50_ms": 28.511,
+          "luauception": {
+            "minMs": 2047.17,
+            "p50Ms": 2172.06,
+            "status": "ok"
+          },
+          "name": "runtime-250KiB",
+          "ouro": {
+            "minMs": 286.141,
+            "p50Ms": 301.014,
+            "status": "ok"
+          },
+          "parse_p50_ms": 88.6719
+        },
+        {
+          "bytecodeBytes": 41,
+          "bytes": 51200,
+          "compile_only_o2_p50_ms": 1.13071,
+          "desc": "50 KiB generics & types",
+          "lex_p50_ms": 7.16087,
+          "luauception": {
+            "minMs": 237.865,
+            "p50Ms": 246.285,
+            "status": "ok"
+          },
+          "name": "types-50KiB",
+          "ouro": {
+            "minMs": 18.9345,
+            "p50Ms": 19.3082,
+            "status": "ok"
+          },
+          "parse_p50_ms": 18.7298
+        }
+      ],
+      "deserialize": [
+        {
+          "bytecodeBytes": 10628,
+          "deserialize": {
+            "minMs": 0.14367,
+            "p50Ms": 0.180571,
+            "status": "ok"
+          },
+          "loadBytecode": {
+            "minMs": 0.542362,
+            "p50Ms": 0.577831,
+            "status": "ok"
+          },
+          "name": "runtime-10KiB"
+        },
+        {
+          "bytecodeBytes": 54019,
+          "deserialize": {
+            "minMs": 0.819233,
+            "p50Ms": 0.974162,
+            "status": "ok"
+          },
+          "loadBytecode": {
+            "minMs": 2.71233,
+            "p50Ms": 2.96345,
+            "status": "ok"
+          },
+          "name": "runtime-50KiB"
+        },
+        {
+          "bytecodeBytes": 271252,
+          "deserialize": {
+            "minMs": 4.00438,
+            "p50Ms": 4.11415,
+            "status": "ok"
+          },
+          "loadBytecode": {
+            "minMs": 12.8935,
+            "p50Ms": 13.1471,
+            "status": "ok"
+          },
+          "name": "runtime-250KiB"
+        }
+      ],
+      "vm": [
+        {
+          "desc": "mixed loop/fib/meta/co",
+          "fiu_default": {
+            "minMs": 60.0429,
+            "p50Ms": 61.5494,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 58.8193,
+            "p50Ms": 60.9619,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.501051,
+            "p50Ms": 0.577112,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 247.968,
+            "p50Ms": 249.109,
+            "status": "ok"
+          },
+          "name": "vm-suite",
+          "ouro": {
+            "minMs": 16.4165,
+            "p50Ms": 16.5636,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 18.6481,
+            "p50Ms": 20.1702,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "100k arithmetic loop",
+          "fiu_default": {
+            "minMs": 149.171,
+            "p50Ms": 151.394,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 148.362,
+            "p50Ms": 151.973,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.930862,
+            "p50Ms": 0.942683,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 513.232,
+            "p50Ms": 515.975,
+            "status": "ok"
+          },
+          "name": "arith-100k",
+          "ouro": {
+            "minMs": 27.4681,
+            "p50Ms": 27.5374,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 30.7056,
+            "p50Ms": 30.8714,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "recursive fib(24)",
+          "fiu_default": {
+            "minMs": 420.399,
+            "p50Ms": 430.404,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 362.857,
+            "p50Ms": 372.962,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 2.42564,
+            "p50Ms": 2.52008,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 1137.41,
+            "p50Ms": 1149.78,
+            "status": "ok"
+          },
+          "name": "fib-24",
+          "ouro": {
+            "minMs": 91.0184,
+            "p50Ms": 91.6863,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 106.031,
+            "p50Ms": 106.796,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "20k upvalue closures",
+          "fiu_default": {
+            "minMs": 45.2936,
+            "p50Ms": 46.1831,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 46.0285,
+            "p50Ms": 47.0722,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.659892,
+            "p50Ms": 0.690922,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 325.256,
+            "p50Ms": 347.767,
+            "status": "ok"
+          },
+          "name": "closures-20k",
+          "ouro": {
+            "minMs": 21.2352,
+            "p50Ms": 21.7167,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 23.8893,
+            "p50Ms": 24.7957,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "5k metatable & method ops",
+          "fiu_default": {
+            "minMs": 50.2502,
+            "p50Ms": 52.0727,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 48.5319,
+            "p50Ms": 51.4654,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.609641,
+            "p50Ms": 0.644712,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 296.959,
+            "p50Ms": 318.251,
+            "status": "ok"
+          },
+          "name": "tables-meta-5k",
+          "ouro": {
+            "minMs": 16.6605,
+            "p50Ms": 16.9797,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 18.5952,
+            "p50Ms": 19.5262,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "20k math builtins & imports",
+          "fiu_default": {
+            "minMs": 105.173,
+            "p50Ms": 106.392,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 101.742,
+            "p50Ms": 104.942,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.577972,
+            "p50Ms": 0.580502,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 254.144,
+            "p50Ms": 256.775,
+            "status": "ok"
+          },
+          "name": "imports-20k",
+          "ouro": {
+            "minMs": 15.8097,
+            "p50Ms": 15.9185,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 16.8642,
+            "p50Ms": 17.5403,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "20k global reads & writes",
+          "fiu_default": {
+            "minMs": 15.8913,
+            "p50Ms": 16.2062,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 16.2659,
+            "p50Ms": 16.657,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.2041,
+            "p50Ms": 0.204241,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 95.5856,
+            "p50Ms": 97.7959,
+            "status": "ok"
+          },
+          "name": "globals-20k",
+          "ouro": {
+            "minMs": 6.28507,
+            "p50Ms": 6.31022,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 7.07148,
+            "p50Ms": 7.115,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "2k protected calls (25% throw)",
+          "fiu_default": {
+            "minMs": 10.1119,
+            "p50Ms": 11.3586,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 9.11347,
+            "p50Ms": 9.63252,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.851893,
+            "p50Ms": 0.923752,
+            "status": "ok"
+          },
+          "luauception": {
+            "error": "/tmp/luauception-0.654/Full.luau:174773: /tmp/luauception-0.654/Full.luau:174773: /tmp/luauception-0.654/Full.luau:174846: Infinity",
+            "status": "error"
+          },
+          "name": "pcall-2k",
+          "ouro": {
+            "minMs": 3.3395,
+            "p50Ms": 3.34808,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 5.24944,
+            "p50Ms": 5.31885,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "20k ipairs table scans",
+          "fiu_default": {
+            "minMs": 20.158,
+            "p50Ms": 21.0685,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 20.1653,
+            "p50Ms": 20.3086,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.1023,
+            "p50Ms": 0.10266,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 74.5457,
+            "p50Ms": 75.952,
+            "status": "ok"
+          },
+          "name": "forin-gen-20k",
+          "ouro": {
+            "minMs": 4.79011,
+            "p50Ms": 4.84172,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 5.30782,
+            "p50Ms": 5.36644,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "quicksort 2,000 numbers",
+          "fiu_default": {
+            "minMs": 44.3526,
+            "p50Ms": 44.9985,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 44.2052,
+            "p50Ms": 46.8896,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.730572,
+            "p50Ms": 0.740902,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 267.073,
+            "p50Ms": 269.529,
+            "status": "ok"
+          },
+          "name": "quicksort-2k",
+          "ouro": {
+            "minMs": 16.2981,
+            "p50Ms": 16.5028,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 18.8821,
+            "p50Ms": 18.9994,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "10k concat & string calls",
+          "fiu_default": {
+            "minMs": 61.6815,
+            "p50Ms": 62.5725,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 59.8633,
+            "p50Ms": 60.57,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 1.22168,
+            "p50Ms": 1.24183,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 414.25,
+            "p50Ms": 438.22,
+            "status": "ok"
+          },
+          "name": "string-ops-10k",
+          "ouro": {
+            "minMs": 14.6964,
+            "p50Ms": 15.0734,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 14.9715,
+            "p50Ms": 15.3161,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "10k vararg select loops",
+          "fiu_default": {
+            "minMs": 145.26,
+            "p50Ms": 150.914,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 147.751,
+            "p50Ms": 149.92,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 0.539352,
+            "p50Ms": 0.544052,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 361.405,
+            "p50Ms": 382.082,
+            "status": "ok"
+          },
+          "name": "varargs-10k",
+          "ouro": {
+            "minMs": 28.9969,
+            "p50Ms": 29.3301,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 33.3886,
+            "p50Ms": 33.748,
+            "status": "ok"
+          }
+        },
+        {
+          "desc": "20k dictionary field ops",
+          "fiu_default": {
+            "minMs": 87.9471,
+            "p50Ms": 95.5591,
+            "status": "ok"
+          },
+          "fiu_fast": {
+            "minMs": 88.3666,
+            "p50Ms": 88.6911,
+            "status": "ok"
+          },
+          "host": {
+            "minMs": 1.42817,
+            "p50Ms": 1.43921,
+            "status": "ok"
+          },
+          "luauception": {
+            "minMs": 549.216,
+            "p50Ms": 561.358,
+            "status": "ok"
+          },
+          "name": "table-dict-20k",
+          "ouro": {
+            "minMs": 26.0101,
+            "p50Ms": 26.1833,
+            "status": "ok"
+          },
+          "ouro_guarded": {
+            "minMs": 28.8284,
+            "p50Ms": 29.045,
+            "status": "ok"
+          }
+        }
+      ],
+      "cold_require": {
+        "ouro_root_ms": 0.681,
+        "ouro_vm_ms": 20.883,
+        "ouro_parser_ms": 9.663,
+        "ouro_compiler_ms": 19.619,
+        "ouro_total_ms": 50.83,
+        "fiu_ms": 2.414,
+        "luauception_full_ms": 363.134,
+        "luauception_compiler_ms": 218.22,
+        "luauception_vm_ms": 189.375
+      }
+    }
+  }
+}

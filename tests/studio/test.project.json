@@ -1,0 +1,15 @@
+{
+  "name": "OuroScratch",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Ouro": {
+        "$path": "../../src"
+      },
+      "sert": {
+        "$path": "../../.sert/sert/src"
+      }
+    }
+  }
+}
