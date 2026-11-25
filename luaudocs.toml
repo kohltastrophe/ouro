@@ -1,0 +1,48 @@
+title = "Ouro"
+description = "Self-hosted Luau 0.748 parser, bytecode compiler, and sandboxed register VM in pure Luau."
+
+[source]
+entries = ["src"]
+exclude = [
+	"src/Arena.luau",
+	"src/BytecodeBuilder.luau",
+	"src/BytecodeCodec.luau",
+	"src/BytecodeDefs.luau",
+	"src/BytecodeDisassembler.luau",
+	"src/CompilerBuiltins.luau",
+	"src/CompilerClass.luau",
+	"src/CompilerExpr.luau",
+	"src/CompilerFolding.luau",
+	"src/CompilerInline.luau",
+	"src/CompilerTypes.luau",
+	"src/Confusables.luau",
+	"src/Declarations.luau",
+	"src/Diagnostics.luau",
+	"src/Grammar.luau",
+	"src/Lexer.luau",
+	"src/Parser.luau",
+	"src/RuntimeParser.luau",
+	"src/Schema.luau",
+	"src/State.luau",
+	"src/TypeParser.luau",
+	"src/VM/Dispatch.luau",
+	"src/VM/DispatchGuarded.luau",
+	"src/VM/Fastcalls.luau",
+	"src/VM/HostEnv.luau",
+	"src/VM/RuntimeEnv.luau",
+	"src/VM/Verifier.luau",
+]
+
+[repo]
+url = "https://github.com/kohltastrophe/ouro"
+
+[site]
+siteTitle = "Ouro"
+
+[api]
+includePrivate = false
+linkRobloxTypes = true
+
+[docs]
+url = "https://ouro.kohl.gg"
+model = true

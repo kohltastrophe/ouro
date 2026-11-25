@@ -1,0 +1,46 @@
+name: Official Luau release check
+on:
+  schedule:
+    - cron: '17 13 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: official-luau-release
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: kohltastrophe/sert/actions/setup@v0.3.0
+      - name: Verify pinned upstream sources
+        run: |
+          python3 tools/fetch_upstream.py --output "$RUNNER_TEMP/luau-source"
+          python3 tools/generate.py --source "$RUNNER_TEMP/luau-source" --verify-only
+      - name: Generate and test the latest official release candidate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/daily.py --output "$RUNNER_TEMP/release-check"
+      - name: Show release summary
+        if: always()
+        run: |
+          if test -f "$RUNNER_TEMP/release-check/SUMMARY.md"; then
+            cat "$RUNNER_TEMP/release-check/SUMMARY.md" >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Upload candidate and evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: official-luau-release
+          path: |
+            ${{ runner.temp }}/release-check/release-report.json
+            ${{ runner.temp }}/release-check/SUMMARY.md
+            ${{ runner.temp }}/release-check/conformance.log
+            ${{ runner.temp }}/release-check/conformance
+            ${{ runner.temp }}/release-check/candidate
+          if-no-files-found: warn
+          retention-days: 30
