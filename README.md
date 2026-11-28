@@ -136,7 +136,7 @@ Add `Ouro` to `wally.toml` and run `wally install`:
 
 ```toml
 [dependencies]
-Ouro = "kohltastrophe/ouro@0.1.0"
+Ouro = "kohltastrophe/ouro@0.2.0"
 ```
 
 ### pesde
@@ -145,7 +145,7 @@ Ouro = "kohltastrophe/ouro@0.1.0"
 pesde add kohltastrophe/ouro
 ```
 
-Ouro publishes both `roblox` and `luau` targets on pesde under the same version (`ouro = { name = "kohltastrophe/ouro", version = "^0.1.0" }`).
+Ouro publishes both `roblox` and `luau` targets on pesde under the same version (`ouro = { name = "kohltastrophe/ouro", version = "^0.2.0" }`).
 
 ### GitHub Releases & Rojo
 

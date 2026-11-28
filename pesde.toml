@@ -1,5 +1,5 @@
 name = "kohltastrophe/ouro"
-version = "0.1.0"
+version = "0.2.0"
 description = "Self-hosted Luau 0.748 lexer, parser, bytecode compiler, and sandboxed register VM in pure Luau."
 authors = ["Kohl <hi@kohl.gg>"]
 repository = "https://github.com/kohltastrophe/ouro"

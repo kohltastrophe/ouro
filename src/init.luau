@@ -133,7 +133,7 @@ type PublicApi = {
 local package = {} :: any
 
 --- Package semantic version string.
-package.version = "0.1.0"
+package.version = "0.2.0"
 --- Pinned upstream Luau release version (`"0.748"`).
 package.luauVersion = Grammar.version
 --- Pinned upstream Luau Git commit SHA from `UPSTREAM.json`.

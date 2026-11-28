@@ -17,7 +17,7 @@ Add `Ouro` to `[dependencies]` in `wally.toml` and run `wally install`:
 
 ```toml
 [dependencies]
-Ouro = "kohltastrophe/ouro@0.1.0"
+Ouro = "kohltastrophe/ouro@0.2.0"
 ```
 
 Ouro installs as a `shared` dependency in `Packages`, available on both the Roblox server and client.
@@ -34,7 +34,7 @@ Or add it directly to `[dependencies]` in `pesde.toml` and run `pesde install`:
 
 ```toml
 [dependencies]
-ouro = { name = "kohltastrophe/ouro", version = "^0.1.0" }
+ouro = { name = "kohltastrophe/ouro", version = "^0.2.0" }
 ```
 
 Ouro publishes both `roblox` and `luau` targets under the same version, so `pesde add` picks the matching build automatically.
